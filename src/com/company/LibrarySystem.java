@@ -15,6 +15,7 @@ public class LibrarySystem implements Serializable {
     private ArrayList<Book> addedBooks = new ArrayList<>();
     private ArrayList<Book> borrowedBooks = new ArrayList<>();
     private String outputFile = "output.ser";
+    private String borrowedBooksFile = "borrow.ser";
     transient private Scanner input = new Scanner(System.in);
 
 
@@ -58,10 +59,14 @@ public class LibrarySystem implements Serializable {
                 switch (choice){
                     case "Y":
                         System.out.println("You will now borrow the book: " + book.getBookTitle() + "\n");
+                        searchBooks.remove(book);
                         addedBooks.remove(book);
-                        saveFile(outputFile, addedBooks, StandardOpenOption.APPEND);
-                        System.out.println("ENDING");
-                        //borrowBook(book);
+                        saveFile(outputFile, searchBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                        saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+                        borrowedBooks.add(book);
+                        saveFile(borrowedBooksFile, borrowedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                        System.out.println("Can you read this? " + book.toString());
                         break;
 
                     case "N":
@@ -83,11 +88,11 @@ public class LibrarySystem implements Serializable {
 
     public void searchAuthor(){
         System.out.println("Search author: ");
-        String searchTitle = input.nextLine();
+        String searchAuthor = input.nextLine();
 
         List<Book> searchBooks = (List<Book>)FileUtility.loadObject(outputFile);
         for(Book book: searchBooks){
-            if(searchTitle.equals(book.getBookTitle())){
+            if(searchAuthor.equals(book.getAuthor())){
                 System.out.print("You searched for this author and we found it! " + "\n" + book.toString() + "\n");
                 System.out.println("Would you like to rent this book? [Y]/[N]");
                 String choice = input.nextLine();
@@ -95,11 +100,8 @@ public class LibrarySystem implements Serializable {
                 switch (choice){
                     case "Y":
                         System.out.println("You will now borrow the book: " + book.getBookTitle() + "\n");
-                        addedBooks.remove(book);
-                        borrowedBooks.add(book);
-                        saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                        borrowBook(book);
                         System.out.println("ENDING");
-                        //borrowBook(book);
                         break;
 
                     case "N":
@@ -112,7 +114,7 @@ public class LibrarySystem implements Serializable {
 
                 break;
             }
-            else if(!searchTitle.equals(book.getBookTitle())){
+            else if(!searchAuthor.equals(book.getAuthor())){
                 System.out.println("Sorry we could not find the book you were looking for. ");
                 break;
             }
@@ -120,9 +122,31 @@ public class LibrarySystem implements Serializable {
 
     }
 
-    public void borrowedBook(){
-        for(Book b: borrowedBooks){
-            System.out.println("My borrowed books: " + b);
+    public void borrowBook(Book b){
+        System.out.println("Inside borrow book! ");
+
+        addedBooks.remove(b);
+        borrowedBooks.add(b);
+
+        saveFile(borrowedBooksFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND);
+
+        List<Book> borrowed = (List<Book>)FileUtility.loadObject(borrowedBooksFile);
+        for(Book bk: borrowed){
+            System.out.println("Borrowed books: " + bk);
+        }
+
+        saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW, StandardOpenOption.APPEND);
+
+        List<Book> newAddedBooks = (List<Book>)FileUtility.loadObject(outputFile);
+        for(Book bkk: newAddedBooks){
+            System.out.println("Available books: " + bkk);
+        }
+        }
+
+        public void myBorrowedBooks(){
+        List<Book> userBooks = (List<Book>)FileUtility.loadObject(borrowedBooksFile);
+        for(Book b: userBooks){
+            System.out.println("The borrowed books: " + b.toString());
         }
         }
 

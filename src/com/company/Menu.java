@@ -152,7 +152,7 @@ public class Menu implements Serializable {
 
                         case "4":
                             System.out.println("My borrowed books: ");
-                            newLibrarySystem.borrowedBook();
+                            newLibrarySystem.myBorrowedBooks();
                             break;
 
                         default:
