@@ -14,8 +14,7 @@ public class ManageUserInformation implements Serializable {
 
     private Scanner input = new Scanner(System.in);
     private String memberList = "member.ser";
-    //private String allMembersFile = "all-members.ser";
-    private List<User> users;
+    private ArrayList<User> users = new ArrayList<>();
 
 
     public ManageUserInformation() {
@@ -28,10 +27,9 @@ public class ManageUserInformation implements Serializable {
         System.out.println("Please enter a password: ");
         String password = input.nextLine();
         User newMember = new User(userName, password);
-        users = new ArrayList<>();
         users.add(newMember);
         saveFile(memberList, users, StandardOpenOption.CREATE);
-        System.out.printf("New user s% successfully saved!  " + userName);
+        System.out.printf("New user s% successfully saved!  " + userName + "\n");
     }
 
     public boolean userLogin(){
@@ -40,19 +38,24 @@ public class ManageUserInformation implements Serializable {
         System.out.println("Please enter your password: ");
         String password = input.nextLine();
 
-        for(User user: users){
+        List<User> members = (ArrayList<User>)FileUtility.loadObject(memberList);
+        for(User user: members){
             if(userName.equals(user.getUserName()) && password.equals(user.getPassword())){
-                System.out.println("You can log in! ");
+                System.out.println("Welcome " + user.getUserName() + "\n");
                 return true;
             }
             else{
-                System.out.println("Sorry your username and password is incorrect. ");
+                System.out.println("Error. You have not entered the correct login information. " + "\n" +
+                        "Please try again or create a new library member account. " + "\n"
+                );
                 return false;
             }
-
         }
-        return true;
+
+        return false;
     }
+
+
 
     public void saveFile(String filename, Object o, StandardOpenOption... option) {
         Path path = Paths.get(filename);

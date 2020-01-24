@@ -44,7 +44,6 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Library member");
-                            //userInformation.userLogin();
                             if(userInformation.userLogin()){
                                 libraryMemberMenu();
                             }
@@ -120,38 +119,55 @@ public class Menu implements Serializable {
 
     private void libraryMemberMenu(){
         String choice = "";
-        System.out.println("Make one of the following choices: " + "\n" +
-                "1. See all books in the library" + "\n" +
-                "2. Available books to rent" + "\n");
 
-        try {
-            // User choice
-            choice = input.nextLine();
+        while(running) {
+            System.out.println(
+                    "Make one of the following choices: " + "\n" +
+                    "1. See all books in the library " + "\n" +
+                    "2. Search a book by title " + "\n" +
+                    "3. Search book by author " + "\n" +
+                    "4. See available books to rent ");
 
-            // Check if array above contains the choice made by user
-            if (Arrays.asList(choices).contains(choice)) {
-                switch (choice) {
-                    case "1":
-                        System.out.println("See all books in the library");
-                        newLibrarySystem.allLibraryBooks();
-                        break;
+            try {
+                // User choice
+                choice = input.nextLine();
 
-                    case "2":
-                        System.out.println("Available books");
-                        break;
+                // Check if array above contains the choice made by user
+                if (Arrays.asList(choices).contains(choice)) {
+                    switch (choice) {
+                        case "1":
+                            System.out.println("All books in the library: ");
+                            newLibrarySystem.allLibraryBooks();
+                            break;
 
-                    default:
-                        System.out.println("Default! ");
-                        break;
+                        case "2":
+                            System.out.println("Search book title");
+                            newLibrarySystem.searchBookTitle();
+                            break;
+
+                        case "3":
+                            System.out.println("Search author");
+                            newLibrarySystem.searchAuthor();
+                            break;
+
+                        case "4":
+                            System.out.println("My borrowed books: ");
+                            newLibrarySystem.borrowedBook();
+                            break;
+
+                        default:
+                            System.out.println("Default! ");
+                            break;
+                    }
+
+                } else {
+                    System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
                 }
 
-            } else {
-                System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+
+            } catch (Exception e) {
+                System.out.println("Oops! Something went wrong. ");
             }
-
-
-        } catch (Exception e) {
-            System.out.println("Oops! Something went wrong. ");
         }
 
     }
