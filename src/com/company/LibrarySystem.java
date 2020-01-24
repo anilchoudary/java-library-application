@@ -30,7 +30,6 @@ public class LibrarySystem implements Serializable {
         String author = input.nextLine();
         System.out.println("Please add information about the book: ");
         String aboutThisBook = input.nextLine();
-
         Book newBook = new Book(bookTitle, author, aboutThisBook);
         addedBooks.add(newBook);
         saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
@@ -164,12 +163,18 @@ public class LibrarySystem implements Serializable {
         System.out.println("Saved filed successfully! " + o.toString());
     }
 
-    public void loadFile(Object obj){
-        Path path = Paths.get(outputFile);
+
+
+    public Object loadFile(String filename, List<Book> bookFiles){
+        Path path = Paths.get(filename);
         try {
             ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path));
             try {
-                obj = ois.readObject();
+                bookFiles = (List<Book>) ois.readObject();
+                for(Book book: bookFiles){
+                    System.out.println("Object: " + "\n" + book);
+                }
+
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -177,8 +182,6 @@ public class LibrarySystem implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println(obj.toString() + "\n");
+        return bookFiles;
     }
-
 }
