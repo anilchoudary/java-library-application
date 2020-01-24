@@ -31,15 +31,8 @@ public class LibrarySystem implements Serializable {
         System.out.println("Please add information about the book: ");
         String aboutThisBook = input.nextLine();
         Book newBook = new Book(bookTitle, author, aboutThisBook);
-
         saveFile(outputFile, newBook, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
-
         addedBooks.add(newBook);
-        //saveNewFile(outputFile, addedBooks);
-    }
-
-    public void saveNewFile(String filename, ArrayList<Book> b){
-        FileUtility.saveObject(filename, b, StandardOpenOption.CREATE);
     }
 
 
@@ -49,14 +42,6 @@ public class LibrarySystem implements Serializable {
             System.out.println(book);
             System.out.println("BOOKS!");
         }
-
-
-
-        /*List<Book> books = (List<Book>)FileUtility.loadObject(outputFile);
-        for(Book book: books){
-            System.out.println("The books are: " + book);
-        }*/
-
     }
 
 
@@ -65,7 +50,49 @@ public class LibrarySystem implements Serializable {
         System.out.println("Search title: ");
         String searchTitle = input.nextLine();
 
-        List<Book> searchBooks = (List<Book>)FileUtility.loadObject(outputFile);
+        List<Book> books = (List<Book>)loadFile(outputFile, addedBooks);
+        for(Book book: books){
+            if(searchTitle.equals(book.getBookTitle())){
+                System.out.print("You searched for this book and we found it! " + "\n" + book.toString() + "\n");
+                System.out.println("Would you like to rent this book? [Y]/[N]");
+                String choice = input.nextLine();
+
+                switch (choice){
+                    case "Y":
+                        System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
+                        addedBooks.remove(book);
+
+                        loadFile(outputFile, addedBooks);
+                        for(Book b: addedBooks){
+                            addedBooks.add(b);
+                            saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                            System.out.println("Added new list " + b);
+                        }
+
+                        borrowedBooks.add(book);
+                        saveFile(borrowedBooksFile, borrowedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                        System.out.println("Can you read this? " + book.toString());
+                        break;
+
+                    case "N":
+                        System.out.println("NOT RENTING");
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+                 else if(!searchTitle.equals(book.getBookTitle())){
+                    System.out.println("Sorry we could not find the book you were looking for. ");
+                    break;
+                }
+
+        }
+
+
+
+        /*List<Book> searchBooks = (List<Book>)FileUtility.loadObject(outputFile);
         for(Book book: searchBooks){
             if(searchTitle.equals(book.getBookTitle())){
                 System.out.print("You searched for this book and we found it! " + "\n" + book.toString() + "\n");
@@ -99,7 +126,7 @@ public class LibrarySystem implements Serializable {
                 System.out.println("Sorry we could not find the book you were looking for. ");
                 break;
             }
-        }
+        }*/
     }
 
     public void searchAuthor(){
