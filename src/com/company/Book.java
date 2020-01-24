@@ -1,6 +1,8 @@
 package com.company;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
 
     private String bookTitle;
     private String author;
@@ -10,5 +12,13 @@ public class Book {
         this.bookTitle = bookTitle;
         this.author = author;
         this.aboutThisBook = aboutThisBook;
+    }
+
+    @Override
+    public String toString() {
+        return "[Book] " + "\n" +
+                "TITLE: '" + bookTitle + '\''  + "\n" +
+                "AUTHOR: '" + author + '\''  + "\n" +
+                "ABOUT: '" + aboutThisBook + '\''  + "\n";
     }
 }

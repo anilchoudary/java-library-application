@@ -8,7 +8,11 @@ public class Menu {
     private Scanner input = new Scanner(System.in);
     private String[] choices = {"1", "2", "3", "4"};
     private boolean running = true;
-    
+    private LibrarySystem newLibrarySystem = new LibrarySystem();
+
+
+
+
     public Menu() {
         mainMenu();
     }
@@ -22,7 +26,7 @@ public class Menu {
                     "MAIN MENU" + "\n" +
                     "[1] Log in as admin" + "\n" +
                     "[2] Log in as library member" + "\n" +
-                    "[3] Create a new user" + "\n" +
+                    "[3] Create a library member account" + "\n" +
                     "[4] Exit program");
 
             try {
@@ -35,14 +39,17 @@ public class Menu {
                     switch (choice) {
                         case "1":
                             System.out.println("Admin");
+                            adminMenu();
                             break;
 
                         case "2":
                             System.out.println("Library member");
+                            libraryMemberMenu();
                             break;
 
                         case "3":
                             System.out.println("Create a new user");
+                            new AddUser();
                             break;
 
                         case "4":
@@ -71,10 +78,83 @@ public class Menu {
     }
 
     private void adminMenu(){
+        String choice = "";
+        System.out.println("Make one of the following choices: " + "\n" +
+                "1. Add new book" + "\n" +
+                "2. Exit program" + "\n");
+
+        try {
+            // User choice
+            choice = input.nextLine();
+
+            // Check if array above contains the choice made by user
+            if (Arrays.asList(choices).contains(choice)) {
+                switch (choice) {
+                    case "1":
+                        System.out.println("Adding new book");
+                        newLibrarySystem.addNewBook();
+                        break;
+
+                    case "2":
+                        System.out.println("Library member");
+                        break;
+
+                    default:
+                        System.out.println("Default! ");
+                        break;
+                }
+
+            } else {
+                System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Oops! Something went wrong. ");
+        }
 
     }
 
     private void libraryMemberMenu(){
+        String choice = "";
+        System.out.println("Make one of the following choices: " + "\n" +
+                "1. See all books in the library" + "\n" +
+                "2. Available books to rent" + "\n");
+
+        try {
+            // User choice
+            choice = input.nextLine();
+
+            // Check if array above contains the choice made by user
+            if (Arrays.asList(choices).contains(choice)) {
+                switch (choice) {
+                    case "1":
+                        System.out.println("See all books in the library");
+                        newLibrarySystem.allLibraryBooks();
+                        break;
+
+                    case "2":
+                        System.out.println("Available books");
+                        break;
+
+                    default:
+                        System.out.println("Default! ");
+                        break;
+                }
+
+            } else {
+                System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("Oops! Something went wrong. ");
+        }
 
     }
+
+
+
+
+
 }
