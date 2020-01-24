@@ -20,7 +20,7 @@ public class LibrarySystem implements Serializable {
 
 
     public LibrarySystem() {
-        FileUtility.loadObject(outputFile);
+        //FileUtility.saveObject(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
     public void addNewBook(){
@@ -31,15 +31,32 @@ public class LibrarySystem implements Serializable {
         System.out.println("Please add information about the book: ");
         String aboutThisBook = input.nextLine();
         Book newBook = new Book(bookTitle, author, aboutThisBook);
+
+        saveFile(outputFile, newBook, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
         addedBooks.add(newBook);
-        saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        //saveNewFile(outputFile, addedBooks);
     }
 
+    public void saveNewFile(String filename, ArrayList<Book> b){
+        FileUtility.saveObject(filename, b, StandardOpenOption.CREATE);
+    }
+
+
     public void allLibraryBooks(){
-        List<Book>books = (List<Book>)FileUtility.loadObject(outputFile);
-        for(Book b: books){
-            System.out.println("NEXT! + " + b.toString());
+        loadFile(outputFile, addedBooks);
+        for(Book book: addedBooks){
+            System.out.println(book);
+            System.out.println("BOOKS!");
         }
+
+
+
+        /*List<Book> books = (List<Book>)FileUtility.loadObject(outputFile);
+        for(Book book: books){
+            System.out.println("The books are: " + book);
+        }*/
+
     }
 
 
@@ -165,12 +182,12 @@ public class LibrarySystem implements Serializable {
 
 
 
-    public Object loadFile(String filename, List<Book> bookFiles){
+    public Object loadFile(String filename, ArrayList<Book> bookFiles){
         Path path = Paths.get(filename);
         try {
             ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(path));
             try {
-                bookFiles = (List<Book>) ois.readObject();
+                bookFiles = (ArrayList<Book>) ois.readObject();
                 for(Book book: bookFiles){
                     System.out.println("Object: " + "\n" + book);
                 }
