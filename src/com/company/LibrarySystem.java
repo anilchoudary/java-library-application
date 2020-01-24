@@ -13,6 +13,7 @@ public class LibrarySystem implements Serializable {
 
     private ArrayList<Book> availableBooks = new ArrayList<>();
     private ArrayList<Book> addedBooks = new ArrayList<>();
+    private ArrayList<Book> borrowedBooks = new ArrayList<>();
     private String outputFile = "output.ser";
     transient private Scanner input = new Scanner(System.in);
     private String bookFile = "books.ser";
@@ -29,9 +30,7 @@ public class LibrarySystem implements Serializable {
         String aboutThisBook = input.nextLine();
         Book newBook = new Book(bookTitle, author, aboutThisBook);
         addedBooks.add(newBook);
-
         saveFile(outputFile, addedBooks, StandardOpenOption.CREATE);
-
     }
 
     public void allLibraryBooks(){
@@ -40,6 +39,11 @@ public class LibrarySystem implements Serializable {
             System.out.println(book.toString());
         }
     }
+
+    private void borrowBook(){
+
+        }
+
 
 
     public void saveFile(String filename, Object o, StandardOpenOption... option) {

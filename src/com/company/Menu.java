@@ -1,16 +1,16 @@
 package com.company;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Serializable {
 
     private Scanner input = new Scanner(System.in);
     private String[] choices = {"1", "2", "3", "4"};
     private boolean running = true;
     private LibrarySystem newLibrarySystem = new LibrarySystem();
-
-
+    ManageUserInformation userInformation = new ManageUserInformation();
 
 
     public Menu() {
@@ -44,12 +44,15 @@ public class Menu {
 
                         case "2":
                             System.out.println("Library member");
-                            libraryMemberMenu();
+                            //userInformation.userLogin();
+                            if(userInformation.userLogin()){
+                                libraryMemberMenu();
+                            }
                             break;
 
                         case "3":
                             System.out.println("Create a new user");
-                            new AddUser();
+                            userInformation.createNewLibraryMember();
                             break;
 
                         case "4":
