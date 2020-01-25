@@ -39,6 +39,15 @@ public class LibrarySystem implements Serializable {
                 System.out.println("Could not remove the book from the system. ");
             }
         }
+
+        for(Book aBook: availableBooks){
+            if(removeBook.equals(aBook.getBookTitle())){
+                availableBooks.remove(aBook);
+            }
+
+        }
+
+
     }
 
     public void allLibraryBooks(){
@@ -72,45 +81,52 @@ public class LibrarySystem implements Serializable {
         }
     }
 
-
-    public void searchTitle(String findTitle){
-        Scanner in = new Scanner(System.in);
+    public boolean findTitle(String title, String userName){
         for(Book book: addedBooks){
-            if(findTitle.equals(book.getBookTitle())){
-                System.out.println("Found the book " + findTitle);
-                System.out.println("Would you like to rent this book? [Y]/[N]");
-                String yes = "Y";
-                String choice = in.nextLine();
-                if(choice.equals(yes)){
-                    rentBook(book);
+            if(book.getBookTitle().equals(title)){
+                if(book.isAvailable()){
+                    borrowBook(book, userName);
                 }
-                else {
-                    System.out.println("NOT RENTING");
+                else{
+                    System.out.println("Sorry this book is not available. ");
+                    break;
                 }
             }
-            else if(!findTitle.equals(book.getBookTitle())){
-                System.out.println("Sorry could not find it. ");
+        }
+        return false;
+    }
+
+    private void borrowBook(Book book, String userName){
+        Scanner in = new Scanner(System.in);
+        System.out.println("Would you like to borrow the book " + book.getBookTitle() +"?" + "\n"
+        + "[Y]/[N]");
+        String userInput = in.nextLine();
+
+        switch (userInput){
+            case "Y":
+                book.setAvailable(false);
+                book.setLibraryUser(userName);
+                borrowedBooks.add(book);
+
+                for(Book aBook: availableBooks){
+                    if(book.equals(aBook)){
+                        availableBooks.remove(book);
+                    }
+                }
+
+                System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
                 break;
-            }
+
+            case "N":
+                break;
+
+            default:
+                System.out.println("Default. ");
+                break;
         }
     }
 
-    private void rentBook(Book book){
-        Scanner in = new Scanner(System.in);
-        System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
-        System.out.println("Please confirm you username: ");
-        String userName = in.nextLine();
-        if(book.isAvailable()){
-            book.setAvailable(false);
-            book.setLibraryUser(userName);
-            borrowedBooks.add(book);
-            availableBooks.remove(book);
-            System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
-        }
-        else{
-            System.out.println("Sorry, this book is not available to rent. ");
-        }
-    }
+
 
 
     /*public void searchAuthor(){

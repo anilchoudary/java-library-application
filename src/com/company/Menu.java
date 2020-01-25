@@ -58,18 +58,8 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Library members login");
-
-                            /*if(userInformation.loginAsLibraryMember()){
-                                System.out.println("Please confirm your username: ");
-                                libraryMemberMenu("Welcome! ");
-                            }
-                            else{
-                                System.out.println("Could not find the user. ");
-                            }*/
-
-                            //userInformation.seeAllUsers();
                             String login[] = userLogin();
-                            if(userInformation.userLogin(login[0], login[1])){
+                            if(userInformation.loginAsLibraryMember(login[0], login[1])){
                                 libraryMemberMenu(login[0]);
                             }
                             else{
@@ -230,7 +220,12 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Search book title");
-                            newLibrarySystem.searchTitle(searchBook());
+                            String searchTitle = searchBook();
+                            if(!newLibrarySystem.findTitle(searchTitle, userName)){
+                                System.out.println("Sorry we could not find this title. ");
+                            }
+
+
                             break;
 
                         case "3":

@@ -39,40 +39,13 @@ public class ManageUserInformation implements Serializable {
     }
 
     public boolean loginAsLibraryMember(String userName, String password){
-        /*Scanner in = new Scanner(System.in);
-        System.out.println("Please enter you user name: ");
-        String userName = in.nextLine();
-        System.out.println("Please enter your password: ");
-        String password = in.nextLine();*/
-
         for (User user : users) {
-            System.out.println(user.toString());
-
                 if(user.getUserName().equals(userName) && user.getPassword().equals(password)){
-                    System.out.println("Found the user! ");
                     return true;
                 }
         }
         return false;
     }
 
-
-
-
-    public boolean userLogin(String userName, String password) {
-
-        for (User user : users) {
-            //String getUserName = user.getUserName();
-            //String getUserPassword = user.getPassword();
-            System.out.println(user.toString());
-            if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
-                return true;
-            } else {
-                System.out.println("Sorry could not find this user. ");
-                return false;
-            }
-        }
-        return false;
-    }
 }
 

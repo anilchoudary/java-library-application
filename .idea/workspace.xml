@@ -4,7 +4,6 @@
     <list default="true" id="ef7d0cd6-f21c-4c21-afba-8562d8e1916c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/borrow.ser" beforeDir="false" afterPath="$PROJECT_DIR$/borrow.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/member.ser" beforeDir="false" afterPath="$PROJECT_DIR$/member.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/ManageUserInformation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/ManageUserInformation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/Menu.class" afterDir="false" />
