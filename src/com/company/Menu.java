@@ -1,33 +1,43 @@
 package com.company;
 
-import java.io.Serializable;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Menu implements Serializable {
 
     private Scanner input = new Scanner(System.in);
-    private String[] choices = {"1", "2", "3", "4"};
+    private String[] choices = {"0", "1", "2", "3", "4"};
     private boolean running = true;
-    private LibrarySystem newLibrarySystem = new LibrarySystem();
-    ManageUserInformation userInformation = new ManageUserInformation();
+    static LibrarySystem newLibrarySystem = new LibrarySystem();
+    static ManageUserInformation userInformation = new ManageUserInformation();
+    static String memberList = "member.ser";
 
 
     public Menu() {
+        //loadAndStartProgram(memberList, userInformation);
         mainMenu();
     }
 
+
     private void mainMenu(){
+
+        //FileUtility.loadObject(memberList);
 
         String choice = "";
 
-        while(running) {
+        while (running) {
             System.out.println(
                     "MAIN MENU" + "\n" +
-                    "[1] Log in as admin" + "\n" +
-                    "[2] Log in as library member" + "\n" +
-                    "[3] Create a library member account" + "\n" +
-                    "[4] Exit program");
+                            "[0] Load and start program" + "\n" +
+                            "[1] Log in as admin" + "\n" +
+                            "[2] Log in as library member" + "\n" +
+                            "[3] Create a library member account" + "\n" +
+                            "[4] Exit program");
 
             try {
 
@@ -37,6 +47,11 @@ public class Menu implements Serializable {
                 // Check if array above contains the choice made by user
                 if (Arrays.asList(choices).contains(choice)) {
                     switch (choice) {
+
+                        case "0":
+                            loadAndStartProgram();
+                            break;
+
                         case "1":
                             System.out.println("Admin");
                             adminMenu();
@@ -51,11 +66,13 @@ public class Menu implements Serializable {
 
                         case "3":
                             System.out.println("Create a new user");
-                            userInformation.createNewLibraryMember();
+                            createNewLibraryMember();
                             break;
 
                         case "4":
                             System.out.println("Have a nice day! ");
+                            saveAndExit(memberList, userInformation);
+                            //FileUtility.saveObject(memberList, userInformation, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
                             System.exit(0);
                             running = false;
                             break;
@@ -83,7 +100,7 @@ public class Menu implements Serializable {
         String choice = "";
         System.out.println("Make one of the following choices: " + "\n" +
                 "1. Add new book" + "\n" +
-                "2. Exit program" + "\n");
+                "2. List of all users" + "\n");
 
         try {
             // User choice
@@ -98,7 +115,8 @@ public class Menu implements Serializable {
                         break;
 
                     case "2":
-                        System.out.println("Library member");
+                        System.out.println("See list of all users");
+                        userInformation.seeAllUsers();
                         break;
 
                     default:
@@ -113,6 +131,7 @@ public class Menu implements Serializable {
 
         } catch (Exception e) {
             System.out.println("Oops! Something went wrong. ");
+            System.out.println(e.getMessage());
         }
 
     }
@@ -172,7 +191,71 @@ public class Menu implements Serializable {
 
     }
 
+    public void createNewLibraryMember() {
+        System.out.println("Please enter a user name: ");
+        String userName = input.nextLine();
+        System.out.println("Please enter a password: ");
+        String password = input.nextLine();
+        System.out.println("username and password added! ");
+        User newMember = new User(userName, password);
+        userInformation.addUserToArray(newMember);
+    }
 
+    private void saveAndExit(String fileName, ManageUserInformation user){
+
+        FileOutputStream fos = null;
+        ObjectOutputStream oos;
+
+        try {
+            fos = new FileOutputStream(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(user);
+            fos.close();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadAndStartProgram()  {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+
+        File file = new File(memberList);
+
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois = new ObjectInputStream(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            userInformation = (ManageUserInformation) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
