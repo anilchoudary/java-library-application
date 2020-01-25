@@ -11,15 +11,16 @@ import java.util.Scanner;
 public class Menu implements Serializable {
 
     private transient Scanner input = new Scanner(System.in);
-    private String[] choices = {"0", "1", "2", "3", "4"};
+    private String[] choices = {"0", "1", "2", "3", "4", "5"};
     private boolean running = true;
     static LibrarySystem newLibrarySystem = new LibrarySystem();
     static ManageUserInformation userInformation = new ManageUserInformation();
     static String memberList = "member.ser";
+    static String outputFile = "output.ser"; // All books in the system
+    static String borrowedBooksFile = "borrow.ser"; // Borrowed books
 
 
     public Menu() {
-        //loadAndStartProgram(memberList, userInformation);
         mainMenu();
     }
 
@@ -34,8 +35,8 @@ public class Menu implements Serializable {
                             "[0] Load and start program" + "\n" +
                             "[1] Log in as admin" + "\n" +
                             "[2] Log in as library member" + "\n" +
-                            "[3] Create a library member account" + "\n" +
-                            "[4] Exit program");
+                            "[3] Create a new library member account" + "\n" +
+                            "[4] Exit and save program");
 
             try {
 
@@ -47,19 +48,18 @@ public class Menu implements Serializable {
                     switch (choice) {
 
                         case "0":
-                            loadAndStartProgram();
+                            loadBookInformationAndStartProgram(outputFile);
+                            loadBookInformationAndStartProgram(borrowedBooksFile);
+                            loadUserInformationAndStartProgram();
                             break;
 
                         case "1":
-                            System.out.println("Admin");
-                            adminMenu();
+                            System.out.println("Admin login");
+                            adminLogin();
                             break;
 
                         case "2":
-                            System.out.println("Log in");
-                            /*if(userInformation.userLogin()){
-                                libraryMemberMenu();
-                            }*/
+                            System.out.println("Library members login");
                             userLogin();
                             break;
 
@@ -70,8 +70,9 @@ public class Menu implements Serializable {
 
                         case "4":
                             System.out.println("Have a nice day! ");
-                            saveAndExit(memberList, userInformation);
-                            //FileUtility.saveObject(memberList, userInformation, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+                            saveBookInformationAndExit(outputFile, newLibrarySystem);
+                            saveBookInformationAndExit(borrowedBooksFile, newLibrarySystem);
+                            saveUserInformationAndExit(memberList, userInformation);
                             System.exit(0);
                             running = false;
                             break;
@@ -89,62 +90,99 @@ public class Menu implements Serializable {
             } catch (Exception e) {
                 System.out.println("Oops! Something went wrong. ");
             }
-
         }
+    }
 
+    private void adminLogin(){
+        String admin = "admin";
+        System.out.println("Please enter your user name: ");
+        String userName = input.nextLine();
+        System.out.println("Please enter your password: ");
+        String password = input.nextLine();
+
+        if(userName.equals(admin) && password.equals(admin)){
+            adminMenu();
+        }
+        else{
+            System.out.println("Wrong user information. Please try again. ");
+            mainMenu();
+        }
 
     }
 
     private void adminMenu(){
         String choice = "";
-        System.out.println("Make one of the following choices: " + "\n" +
-                "1. Add new book" + "\n" +
-                "2. List of all users" + "\n");
+        boolean run = true;
 
-        try {
-            // User choice
-            choice = input.nextLine();
+        while(run) {
+            System.out.println("Make one of the following choices: " + "\n" +
+                    "1. Add new book" + "\n" +
+                    "2. Remove book " + "\n" +
+                    "3. See all books in the library " + "\n" +
+                    "4. List of all users" + "\n" +
+                    "5. Back to main menu");
 
-            // Check if array above contains the choice made by user
-            if (Arrays.asList(choices).contains(choice)) {
-                switch (choice) {
-                    case "1":
-                        System.out.println("Adding new book");
-                        newLibrarySystem.addNewBook();
-                        break;
+            try {
+                // User choice
+                choice = input.nextLine();
 
-                    case "2":
-                        System.out.println("See list of all users");
-                        userInformation.seeAllUsers();
-                        break;
+                // Check if array above contains the choice made by user
+                if (Arrays.asList(choices).contains(choice)) {
+                    switch (choice) {
+                        case "1":
+                            System.out.println("Adding new book");
+                            addNewBook();
+                            break;
 
-                    default:
-                        System.out.println("Default! ");
-                        break;
+                        case "2":
+                            System.out.println("Remove book");
+                            newLibrarySystem.removeBookFromArray(searchBook());
+                            break;
+
+                        case "3":
+                            System.out.println("All books in the library. ");
+                            newLibrarySystem.allLibraryBooks();
+                            break;
+
+                        case "4":
+                            System.out.println("See list of all users");
+                            userInformation.seeAllUsers();
+                            break;
+
+                        case "5":
+                            System.out.println("Go back to main menu. ");
+                            run = false;
+                            break;
+
+                        default:
+                            System.out.println("Default! ");
+                            break;
+                    }
+
+                } else {
+                    System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
                 }
 
-            } else {
-                System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+
+            } catch (Exception e) {
+                System.out.println("Oops! Something went wrong. ");
+                System.out.println(e.getMessage());
             }
-
-
-        } catch (Exception e) {
-            System.out.println("Oops! Something went wrong. ");
-            System.out.println(e.getMessage());
         }
-
     }
 
     private void libraryMemberMenu(){
         String choice = "";
+        boolean run = true;
 
-        while(running) {
+        while(run) {
             System.out.println(
                     "Make one of the following choices: " + "\n" +
                     "1. See all books in the library " + "\n" +
                     "2. Search a book by title " + "\n" +
                     "3. Search book by author " + "\n" +
-                    "4. See available books to rent ");
+                    "4. See available books to rent " + "\n" +
+                    "5. Exit to main menu");
 
             try {
                 // User choice
@@ -160,17 +198,21 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Search book title");
-                            newLibrarySystem.searchBookTitle();
+                            newLibrarySystem.searchBookTitle(searchBook());
                             break;
 
                         case "3":
                             System.out.println("Search author");
-                            newLibrarySystem.searchAuthor();
                             break;
 
                         case "4":
                             System.out.println("My borrowed books: ");
-                            newLibrarySystem.myBorrowedBooks();
+                            newLibrarySystem.allBorrowedBooks();
+                            break;
+
+                        case "5":
+                            System.out.println("Back to main menu. ");
+                            run = false;
                             break;
 
                         default:
@@ -179,7 +221,7 @@ public class Menu implements Serializable {
                     }
 
                 } else {
-                    System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+                    System.out.println("You can only make a choice between 1 and 5. Please try again. " + "\n");
                 }
 
 
@@ -190,6 +232,12 @@ public class Menu implements Serializable {
 
     }
 
+    private String searchBook(){
+        System.out.println("Search title: ");
+        String searchTitle = input.nextLine();
+        return searchTitle;
+    }
+
     private void createNewLibraryMember() {
         System.out.println("Please enter a user name: ");
         String userName = input.nextLine();
@@ -198,6 +246,18 @@ public class Menu implements Serializable {
         System.out.println("Username and password added! ");
         User newMember = new User(userName, password);
         userInformation.addUserToArray(newMember);
+    }
+
+    public void addNewBook(){
+        System.out.println("Please add the book title: ");
+        String bookTitle = input.nextLine();
+        System.out.println("Please add the author: ");
+        String author = input.nextLine();
+        System.out.println("Please add information about the book: ");
+        String aboutThisBook = input.nextLine();
+        boolean available = true;
+        Book newBook = new Book(bookTitle, author, aboutThisBook, true);
+        newLibrarySystem.addBookToArray(newBook);
     }
 
     private void userLogin() {
@@ -215,7 +275,7 @@ public class Menu implements Serializable {
         }
     }
 
-    private void saveAndExit(String fileName, ManageUserInformation user){
+    private void saveUserInformationAndExit(String fileName, ManageUserInformation user){
 
         FileOutputStream fos = null;
         ObjectOutputStream oos;
@@ -235,7 +295,7 @@ public class Menu implements Serializable {
         }
     }
 
-    private void loadAndStartProgram()  {
+    private void loadUserInformationAndStartProgram()  {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
 
@@ -253,6 +313,63 @@ public class Menu implements Serializable {
         }
         try {
             userInformation = (ManageUserInformation) ois.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    private void saveBookInformationAndExit(String fileName, LibrarySystem library){
+
+        FileOutputStream fos = null;
+        ObjectOutputStream oos;
+
+        try {
+            fos = new FileOutputStream(fileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(library);
+            fos.close();
+            oos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadBookInformationAndStartProgram(String filename)  {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+
+        File file = new File(filename);
+
+        try {
+            fis = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            ois = new ObjectInputStream(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            newLibrarySystem = (LibrarySystem) ois.readObject();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

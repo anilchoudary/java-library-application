@@ -1,54 +1,112 @@
 package com.company;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class LibrarySystem implements Serializable {
 
-    private ArrayList<Book> availableBooks = new ArrayList<>();
-    private ArrayList<Book> addedBooks = new ArrayList<>();
-    private ArrayList<Book> borrowedBooks = new ArrayList<>();
-    private String outputFile = "output.ser";
-    private String borrowedBooksFile = "borrow.ser";
+    private List<Book> addedBooks;
+    private List<Book> borrowedBooks;
+    private List<Book> availableBooks;
     transient private Scanner input = new Scanner(System.in);
+    private static final long serialVersionUID = 4220048072494770351L;
+
 
 
     public LibrarySystem() {
-        //FileUtility.saveObject(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        addedBooks = new ArrayList<>();
+        borrowedBooks = new ArrayList<>();
+        availableBooks = new ArrayList<>();
     }
 
-    public void addNewBook(){
-        System.out.println("Please add the book title: ");
-        String bookTitle = input.nextLine();
-        System.out.println("Please add the author: ");
-        String author = input.nextLine();
-        System.out.println("Please add information about the book: ");
-        String aboutThisBook = input.nextLine();
-        Book newBook = new Book(bookTitle, author, aboutThisBook);
-        addedBooks.add(newBook);
+    public void addBookToArray(Book book){
+        addedBooks.add(book);
+        availableBooks.add(book);
+        System.out.println("Successfully added " + book.getBookTitle() + " to the system. ");
+    }
 
-        saveFile(outputFile, addedBooks, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+    public void removeBookFromArray(String removeBook){
+        for(Book book: addedBooks){
+            if(removeBook.equals(book.getBookTitle())){
+                addedBooks.remove(book);
+                System.out.println("Successfully removed the book " + book.getBookTitle() + " from the system. ");
+            }
+            else{
+                System.out.println("Could not remove the book from the system. ");
+            }
+        }
+
 
     }
 
 
     public void allLibraryBooks(){
-        loadFile(outputFile, addedBooks);
         for(Book book: addedBooks){
-            System.out.println(book);
-            System.out.println("BOOKS!");
+            System.out.println(book.toString());
+        }
+    }
+
+    public void allBorrowedBooks(){
+        for(Book book: borrowedBooks){
+            System.out.println(book.toString());
+        }
+    }
+
+    public void allAvailableBooksToRent(){
+        for(Book book: availableBooks){
+            System.out.println(book.toString());
+        }
+    }
+
+    public void searchBookTitle(String findTitle){
+        //System.out.println("Search title: ");
+        //String searchTitle = input.nextLine();
+
+        for(Book book: addedBooks){
+            if(findTitle.equals(book.getBookTitle())){
+                System.out.print("You searched for this book and we found it! " + "\n" + book.toString() + "\n");
+                System.out.println("Would you like to rent this book? [Y]/[N]");
+                String choice = input.nextLine();
+
+                switch (choice){
+                    case "Y":
+                        System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
+                        if(book.isAvailable()){
+                            book.setAvailable(false);
+                            borrowedBooks.add(book);
+                            availableBooks.remove(book);
+                        }
+                        else{
+                            System.out.println("Sorry, this book is not available. ");
+                        }
+
+                        break;
+
+                    case "N":
+                        System.out.println("NOT RENTING");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+                 else if(!findTitle.equals(book.getBookTitle())){
+                    System.out.println("Sorry we could not find the book you were looking for. ");
+                    break;
+                }
         }
     }
 
 
 
-    public void searchBookTitle(){
+
+
+
+
+
+    /*public void searchBookTitle(){
         System.out.println("Search title: ");
         String searchTitle = input.nextLine();
 
@@ -86,9 +144,9 @@ public class LibrarySystem implements Serializable {
                     break;
                 }
         }
-    }
+    }*/
 
-    public void searchAuthor(){
+    /*public void searchAuthor(){
         System.out.println("Search author: ");
         String searchAuthor = input.nextLine();
 
@@ -199,7 +257,7 @@ public class LibrarySystem implements Serializable {
         //loadFile(borrowedBooksFile, borrowedBooks);
         FileUtility.loadObject(outputFile);
         FileUtility.loadObject(borrowedBooksFile);
-    }
+    }*/
 }
 
 
