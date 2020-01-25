@@ -38,7 +38,6 @@ public class LibrarySystem implements Serializable {
             }
         }
 
-
     }
 
 
@@ -61,27 +60,30 @@ public class LibrarySystem implements Serializable {
     }
 
     public void searchBookTitle(String findTitle){
-        //System.out.println("Search title: ");
-        //String searchTitle = input.nextLine();
 
         for(Book book: addedBooks){
             if(findTitle.equals(book.getBookTitle())){
                 System.out.print("You searched for this book and we found it! " + "\n" + book.toString() + "\n");
                 System.out.println("Would you like to rent this book? [Y]/[N]");
+
                 String choice = input.nextLine();
 
                 switch (choice){
                     case "Y":
+                     //rentBook(book);
                         System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
+                        System.out.println("Please confirm you username: ");
+                        String userName = input.nextLine();
                         if(book.isAvailable()){
                             book.setAvailable(false);
+                            book.setLibraryUser(userName);
                             borrowedBooks.add(book);
                             availableBooks.remove(book);
+                            System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
                         }
                         else{
-                            System.out.println("Sorry, this book is not available. ");
+                            System.out.println("Sorry, this book is not available to rent. ");
                         }
-
                         break;
 
                     case "N":
@@ -96,6 +98,22 @@ public class LibrarySystem implements Serializable {
                     System.out.println("Sorry we could not find the book you were looking for. ");
                     break;
                 }
+        }
+    }
+
+    private void rentBook(Book book){
+        System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
+        System.out.println("Please confirm you username: ");
+        String userName = input.nextLine();
+        if(book.isAvailable()){
+            book.setAvailable(false);
+            book.setLibraryUser(userName);
+            borrowedBooks.add(book);
+            availableBooks.remove(book);
+            System.out.println("You will borrow the book: " + book.getBookTitle() + "\n");
+        }
+        else{
+            System.out.println("Sorry, this book is not available to rent. ");
         }
     }
 

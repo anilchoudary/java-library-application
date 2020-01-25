@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Menu implements Serializable {
 
     private transient Scanner input = new Scanner(System.in);
-    private String[] choices = {"0", "1", "2", "3", "4", "5"};
+    private String[] choices = {"0", "1", "2", "3", "4", "5", "6"};
     private boolean running = true;
     static LibrarySystem newLibrarySystem = new LibrarySystem();
     static ManageUserInformation userInformation = new ManageUserInformation();
@@ -118,9 +118,10 @@ public class Menu implements Serializable {
             System.out.println("Make one of the following choices: " + "\n" +
                     "1. Add new book" + "\n" +
                     "2. Remove book " + "\n" +
-                    "3. See all books in the library " + "\n" +
-                    "4. List of all users" + "\n" +
-                    "5. Back to main menu");
+                    "3. Borrowed books " + "\n" +
+                    "4. See all books in the library " + "\n" +
+                    "5. List of all users" + "\n" +
+                    "6. Back to main menu");
 
             try {
                 // User choice
@@ -140,16 +141,21 @@ public class Menu implements Serializable {
                             break;
 
                         case "3":
+                            System.out.println("Borrowed books");
+                            newLibrarySystem.allBorrowedBooks();
+                            break;
+
+                        case "4":
                             System.out.println("All books in the library. ");
                             newLibrarySystem.allLibraryBooks();
                             break;
 
-                        case "4":
+                        case "5":
                             System.out.println("See list of all users");
                             userInformation.seeAllUsers();
                             break;
 
-                        case "5":
+                        case "6":
                             System.out.println("Go back to main menu. ");
                             run = false;
                             break;
@@ -256,7 +262,8 @@ public class Menu implements Serializable {
         System.out.println("Please add information about the book: ");
         String aboutThisBook = input.nextLine();
         boolean available = true;
-        Book newBook = new Book(bookTitle, author, aboutThisBook, true);
+        String user = "None";
+        Book newBook = new Book(bookTitle, author, aboutThisBook, true, user);
         newLibrarySystem.addBookToArray(newBook);
     }
 
