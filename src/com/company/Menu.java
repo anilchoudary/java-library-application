@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Menu implements Serializable {
 
-    private Scanner input = new Scanner(System.in);
+    private transient Scanner input = new Scanner(System.in);
     private String[] choices = {"0", "1", "2", "3", "4"};
     private boolean running = true;
     static LibrarySystem newLibrarySystem = new LibrarySystem();
@@ -25,8 +25,6 @@ public class Menu implements Serializable {
 
 
     private void mainMenu(){
-
-        //FileUtility.loadObject(memberList);
 
         String choice = "";
 
@@ -58,10 +56,11 @@ public class Menu implements Serializable {
                             break;
 
                         case "2":
-                            System.out.println("Library member");
-                            if(userInformation.userLogin()){
+                            System.out.println("Log in");
+                            /*if(userInformation.userLogin()){
                                 libraryMemberMenu();
-                            }
+                            }*/
+                            userLogin();
                             break;
 
                         case "3":
@@ -191,14 +190,29 @@ public class Menu implements Serializable {
 
     }
 
-    public void createNewLibraryMember() {
+    private void createNewLibraryMember() {
         System.out.println("Please enter a user name: ");
         String userName = input.nextLine();
         System.out.println("Please enter a password: ");
         String password = input.nextLine();
-        System.out.println("username and password added! ");
+        System.out.println("Username and password added! ");
         User newMember = new User(userName, password);
         userInformation.addUserToArray(newMember);
+    }
+
+    private void userLogin() {
+        System.out.println("Please enter you user name: ");
+        String userName = input.nextLine();
+        System.out.println("Please enter your password: ");
+        String password = input.nextLine();
+
+        if (userInformation.userLogin(userName, password)) {
+            libraryMemberMenu();
+        }
+        else{
+            System.out.println("Sorry something went wrong. ");
+            mainMenu();
+        }
     }
 
     private void saveAndExit(String fileName, ManageUserInformation user){

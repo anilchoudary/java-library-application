@@ -30,7 +30,6 @@ public class ManageUserInformation implements Serializable {
         String password = input.nextLine();
         System.out.println("username and password added! ");
         User newMember = new User(userName, password);
-        //FileUtility.saveObject(memberList, newMember, StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         addUserToArray(newMember);
     }
 
@@ -38,7 +37,6 @@ public class ManageUserInformation implements Serializable {
     public void addUserToArray(User user){
         users.add(user);
         System.out.println("New user successfully added! Welcome " + user.getUserName());
-        //FileUtility.saveObject(memberList, user, StandardOpenOption.APPEND);
     }
 
     public void seeAllUsers(){
@@ -47,11 +45,11 @@ public class ManageUserInformation implements Serializable {
         }
     }
 
-    public boolean userLogin(){
-        System.out.println("Please enter you user name: ");
+    public boolean userLogin(String userName, String password){
+        /*System.out.println("Please enter you user name: ");
         String userName = input.nextLine();
         System.out.println("Please enter your password: ");
-        String password = input.nextLine();
+        String password = input.nextLine();*/
 
         for(User user: users){
             if(userName.equals(user.getUserName()) && password.equals(user.getPassword())){
