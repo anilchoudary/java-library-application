@@ -39,9 +39,7 @@ public class LibrarySystem implements Serializable {
                 System.out.println("Could not remove the book from the system. ");
             }
         }
-
     }
-
 
     public void allLibraryBooks(){
         for(Book book: addedBooks){
@@ -65,10 +63,7 @@ public class LibrarySystem implements Serializable {
             else{
                 System.out.println("You have no borrowed books. ");
             }
-
         }
-
-
     }
 
     public void allAvailableBooksToRent(){
@@ -82,7 +77,7 @@ public class LibrarySystem implements Serializable {
         Scanner in = new Scanner(System.in);
         for(Book book: addedBooks){
             if(findTitle.equals(book.getBookTitle())){
-                System.out.println("FOUND IT!");
+                System.out.println("Found the book " + findTitle);
                 System.out.println("Would you like to rent this book? [Y]/[N]");
                 String yes = "Y";
                 String choice = in.nextLine();

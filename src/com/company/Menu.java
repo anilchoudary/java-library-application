@@ -7,11 +7,13 @@ import java.util.Scanner;
 public class Menu implements Serializable {
 
     private transient Scanner input = new Scanner(System.in);
-    private String[] choices = {"0", "1", "2", "3", "4", "5", "6"};
+    private String[] choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8"};
     private boolean running = true;
+
     static LibrarySystem newLibrarySystem = new LibrarySystem();
     static ManageUserInformation userInformation = new ManageUserInformation();
-    static String memberList = "member.ser";
+
+    static String memberList = "member.ser"; // All members in the system
     static String outputFile = "output.ser"; // All books in the system
     static String borrowedBooksFile = "borrow.ser"; // Borrowed books
 
@@ -56,7 +58,23 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Library members login");
-                            userLogin();
+
+                            /*if(userInformation.loginAsLibraryMember()){
+                                System.out.println("Please confirm your username: ");
+                                libraryMemberMenu("Welcome! ");
+                            }
+                            else{
+                                System.out.println("Could not find the user. ");
+                            }*/
+
+                            //userInformation.seeAllUsers();
+                            String login[] = userLogin();
+                            if(userInformation.userLogin(login[0], login[1])){
+                                libraryMemberMenu(login[0]);
+                            }
+                            else{
+                                System.out.println("Could not find the user. ");
+                            }
                             break;
 
                         case "3":
@@ -68,7 +86,7 @@ public class Menu implements Serializable {
                             System.out.println("Have a nice day! ");
                             saveBookInformationAndExit(outputFile, newLibrarySystem);
                             saveBookInformationAndExit(borrowedBooksFile, newLibrarySystem);
-                            saveUserInformationAndExit(memberList, userInformation);
+                            saveUserInformationAndExit();
                             System.exit(0);
                             running = false;
                             break;
@@ -116,8 +134,10 @@ public class Menu implements Serializable {
                     "2. Remove book " + "\n" +
                     "3. Borrowed books " + "\n" +
                     "4. See all books in the library " + "\n" +
-                    "5. List of all users" + "\n" +
-                    "6. Back to main menu");
+                    "5. See all available books" + "\n" +
+                    "6. List of all users" + "\n" +
+                    "7. Remove user" + "\n" +
+                    "8. Back to main menu" + "\n");
 
             try {
                 // User choice
@@ -147,11 +167,21 @@ public class Menu implements Serializable {
                             break;
 
                         case "5":
+                            System.out.println("Available books: ");
+                            newLibrarySystem.allAvailableBooksToRent();
+                            break;
+
+                        case "6":
                             System.out.println("See list of all users");
                             userInformation.seeAllUsers();
                             break;
 
-                        case "6":
+                        case "7":
+                            System.out.println("Remove user ");
+                            userInformation.removeUserFromArray(searchUser());
+                            break;
+
+                        case "8":
                             System.out.println("Go back to main menu. ");
                             run = false;
                             break;
@@ -162,18 +192,18 @@ public class Menu implements Serializable {
                     }
 
                 } else {
-                    System.out.println("You can only make a choice between 1 and 2. Please try again. " + "\n");
+                    System.out.println("You can only make a choice between 1 and 8. Please try again. " + "\n");
                 }
 
 
             } catch (Exception e) {
                 System.out.println("Oops! Something went wrong. ");
-                System.out.println(e.getMessage());
             }
         }
     }
 
     private void libraryMemberMenu(String userName){
+        System.out.println("Welcome " + userName);
         String choice = "";
         boolean run = true;
 
@@ -239,6 +269,11 @@ public class Menu implements Serializable {
         return input.nextLine();
     }
 
+    private String searchUser(){
+        System.out.println("Search user: ");
+        return input.nextLine();
+    }
+
     private void createNewLibraryMember() {
         System.out.println("Please enter a user name: ");
         String userName = input.nextLine();
@@ -262,34 +297,28 @@ public class Menu implements Serializable {
         newLibrarySystem.addBookToArray(newBook);
     }
 
-    private void userLogin() {
+    private String[] userLogin() {
         System.out.println("Please enter you user name: ");
         String userName = input.nextLine();
         System.out.println("Please enter your password: ");
         String password = input.nextLine();
 
-        if (userInformation.userLogin(userName, password)) {
-            libraryMemberMenu(userName);
-        }
-        else{
-            System.out.println("Sorry something went wrong. ");
-            mainMenu();
-        }
+        return new String[] {userName, password};
     }
 
-    private void saveUserInformationAndExit(String fileName, ManageUserInformation user){
+    private void saveUserInformationAndExit(){
 
         FileOutputStream fos = null;
         ObjectOutputStream oos;
 
         try {
-            fos = new FileOutputStream(fileName);
+            fos = new FileOutputStream(memberList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         try {
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(user);
+            oos.writeObject(userInformation);
             fos.close();
             oos.close();
         } catch (IOException e) {
