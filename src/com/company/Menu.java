@@ -200,11 +200,12 @@ public class Menu implements Serializable {
         while(run) {
             System.out.println(
                     "Make one of the following choices: " + "\n" +
-                    "1. See all books in the library " + "\n" +
-                    "2. Search a book by title " + "\n" +
-                    "3. Search book by author " + "\n" +
-                    "4. My borrowed books " + "\n" +
-                    "5. Exit to main menu");
+                            "1. See all books in the library " + "\n" +
+                            "2. Search a book by title " + "\n" +
+                            "3. Search book by author " + "\n" +
+                            "4. My borrowed books " + "\n" +
+                            "5. Return book" + "\n" +
+                            "6. Exit to main menu" + "\n");
 
             try {
                 // User choice
@@ -224,8 +225,6 @@ public class Menu implements Serializable {
                             if(!newLibrarySystem.findTitle(searchTitle, userName)){
                                 System.out.println("Sorry we could not find this title. ");
                             }
-
-
                             break;
 
                         case "3":
@@ -238,6 +237,14 @@ public class Menu implements Serializable {
                             break;
 
                         case "5":
+                            System.out.println("Return book. ");
+                            String returnBook = searchBook();
+                            if(!newLibrarySystem.returnBook(returnBook)){
+                                System.out.println("An error occurred. Book could not be returned.  ");
+                            }
+                            break;
+
+                        case "6":
                             System.out.println("Back to main menu. ");
                             run = false;
                             break;
