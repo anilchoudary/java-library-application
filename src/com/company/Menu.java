@@ -1,10 +1,6 @@
 package com.company;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -177,7 +173,7 @@ public class Menu implements Serializable {
         }
     }
 
-    private void libraryMemberMenu(){
+    private void libraryMemberMenu(String userName){
         String choice = "";
         boolean run = true;
 
@@ -187,7 +183,7 @@ public class Menu implements Serializable {
                     "1. See all books in the library " + "\n" +
                     "2. Search a book by title " + "\n" +
                     "3. Search book by author " + "\n" +
-                    "4. See available books to rent " + "\n" +
+                    "4. My borrowed books " + "\n" +
                     "5. Exit to main menu");
 
             try {
@@ -204,7 +200,7 @@ public class Menu implements Serializable {
 
                         case "2":
                             System.out.println("Search book title");
-                            newLibrarySystem.searchBookTitle(searchBook());
+                            newLibrarySystem.searchTitle(searchBook());
                             break;
 
                         case "3":
@@ -213,7 +209,7 @@ public class Menu implements Serializable {
 
                         case "4":
                             System.out.println("My borrowed books: ");
-                            newLibrarySystem.allBorrowedBooks();
+                            newLibrarySystem.myBorrowedBooks(userName);
                             break;
 
                         case "5":
@@ -240,8 +236,7 @@ public class Menu implements Serializable {
 
     private String searchBook(){
         System.out.println("Search title: ");
-        String searchTitle = input.nextLine();
-        return searchTitle;
+        return input.nextLine();
     }
 
     private void createNewLibraryMember() {
@@ -274,7 +269,7 @@ public class Menu implements Serializable {
         String password = input.nextLine();
 
         if (userInformation.userLogin(userName, password)) {
-            libraryMemberMenu();
+            libraryMemberMenu(userName);
         }
         else{
             System.out.println("Sorry something went wrong. ");
