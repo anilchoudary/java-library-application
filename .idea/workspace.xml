@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ef7d0cd6-f21c-4c21-afba-8562d8e1916c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/LibrarySystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/LibrarySystem.java" afterDir="false" />
-    </list>
+    <list default="true" id="ef7d0cd6-f21c-4c21-afba-8562d8e1916c" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
