@@ -34,11 +34,15 @@ public class LibrarySystem implements Serializable {
                 addedBooks.remove(book);
                 System.out.println("Successfully removed the book " + book.getBookTitle() + " from the system. ");
             }
-            for(Book aBook: availableBooks){
-                if(removeBook.equals(aBook.getBookTitle())){
-                    availableBooks.remove(aBook);
-                    System.out.println("Removed available! ");
-                }
+        }
+        for(Book aBook: availableBooks){
+            if(removeBook.equals(aBook.getBookTitle())){
+                availableBooks.remove(aBook);
+            }
+        }
+        for(Book bBook: borrowedBooks){
+            if(removeBook.equals(bBook.getBookTitle())){
+                borrowedBooks.remove(bBook);
             }
         }
         System.out.println("Could not remove the book from the system. ");
