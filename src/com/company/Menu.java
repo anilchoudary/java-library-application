@@ -10,12 +10,12 @@ public class Menu implements Serializable {
     private String[] choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8"}; // Array for switch cases
     private boolean running = true; // Boolean for main menu
 
-    private static LibrarySystem newLibrarySystem = new LibrarySystem();
-    private static ManageUserInformation userInformation = new ManageUserInformation();
+    static LibrarySystem newLibrarySystem = new LibrarySystem();
+    static ManageUserInformation userInformation = new ManageUserInformation();
 
-    private static String memberList = "member.ser"; // All members in the system
-    private static String outputFile = "output.ser"; // All books in the system
-    private static String borrowedBooksFile = "borrow.ser"; // Borrowed books
+    static String memberList = "member.ser"; // All members in the system
+    static String outputFile = "output.ser"; // All books in the system
+    static String borrowedBooksFile = "borrow.ser"; // Borrowed books
 
 
     public Menu() {
@@ -228,15 +228,18 @@ public class Menu implements Serializable {
                             break;
 
                         case "3":
-                            System.out.println("Search book title");
                             String searchTitle = searchBook();
                             if(!newLibrarySystem.findTitle(searchTitle, userName)){
-                                System.out.println("Sorry we could not find this title. ");
+                               System.out.println("Sorry we could not find this book. ");
                             }
                             break;
 
                         case "4":
                             System.out.println("Search author");
+                            //String searchAuthor = searchAuthor();
+                            /*if(!newLibrarySystem.findAuthor(searchAuthor, userName)){
+                                System.out.println("Sorry we could not find this title. ");
+                            }*/
                             break;
 
                         case "5":
@@ -281,6 +284,11 @@ public class Menu implements Serializable {
 
     private String searchUser(){
         System.out.println("Search user: ");
+        return input.nextLine();
+    }
+
+    private String searchAuthor(){
+        System.out.println("Search author: ");
         return input.nextLine();
     }
 

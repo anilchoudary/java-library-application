@@ -3,6 +3,6 @@ package com.company;
 public class Main {
 
     public static void main(String[] args) {
-        new Menu(); // Start program
+        Menu menu = new Menu(); // Start program
     }
 }

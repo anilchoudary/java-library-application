@@ -34,9 +34,6 @@ public class LibrarySystem implements Serializable {
                 addedBooks.remove(book);
                 System.out.println("Successfully removed the book " + book.getBookTitle() + " from the system. ");
             }
-            else{
-                System.out.println("Could not remove the book from the system. ");
-            }
             for(Book aBook: availableBooks){
                 if(removeBook.equals(aBook.getBookTitle())){
                     availableBooks.remove(aBook);
@@ -44,6 +41,7 @@ public class LibrarySystem implements Serializable {
                 }
             }
         }
+        System.out.println("Could not remove the book from the system. ");
     }
 
 
@@ -96,17 +94,34 @@ public class LibrarySystem implements Serializable {
     public boolean findTitle(String title, String userName){
         for(Book book: addedBooks){
             if(book.getBookTitle().equals(title)){
+                System.out.println(book.toStringMembers());
                 if(book.isAvailable()){
                     borrowBook(book, userName);
-                }
-                else{
-                    System.out.println("Sorry this book is not available. ");
                     break;
+                }
+                else if(!book.isAvailable()){
+                    System.out.println("Sorry this book is not available. ");
+                    return true;
                 }
             }
         }
         return false;
     }
+
+    /*public boolean findAuthor(String author, String userName){
+        for(Book book: addedBooks){
+            if(book.getAuthor().equals(author)){
+                if(book.isAvailable()){
+                    borrowBook(book, userName);
+                }
+                else{
+                    System.out.println("Sorry could not find this author. ");
+                    break;
+                }
+            }
+        }
+        return false;
+    }*/
 
     // For library member: borrow book method
     private void borrowBook(Book book, String userName){
@@ -162,46 +177,6 @@ public class LibrarySystem implements Serializable {
         }
         return false;
     }
-
-
-
-    /*public void searchAuthor(){
-        System.out.println("Search author: ");
-        String searchAuthor = input.nextLine();
-
-        List<Book> searchBooks = (List<Book>)FileUtility.loadObject(outputFile);
-        for(Book book: searchBooks){
-            if(searchAuthor.equals(book.getAuthor())){
-                System.out.print("You searched for this author and we found it! " + "\n" + book.toString() + "\n");
-                System.out.println("Would you like to rent this book? [Y]/[N]");
-                String choice = input.nextLine();
-
-                switch (choice){
-                    case "Y":
-                        System.out.println("You will now borrow the book: " + book.getBookTitle() + "\n");
-                        borrowBook(book);
-                        System.out.println("ENDING");
-                        break;
-
-                    case "N":
-                        System.out.println("NOT RENTING");
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-            }
-            else if(!searchAuthor.equals(book.getAuthor())){
-                System.out.println("Sorry we could not find the book you were looking for. ");
-                break;
-            }
-        }
-
-    }*/
-
-
 }
 
 

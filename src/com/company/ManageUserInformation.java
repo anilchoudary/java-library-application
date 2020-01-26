@@ -30,10 +30,9 @@ public class ManageUserInformation implements Serializable {
                 users.remove(user);
                 System.out.println("Successfully removed the user " + user.getUserName() + " from the system. ");
             }
-            else{
-                System.out.println("Could not remove the user from the system. ");
-            }
+
         }
+        System.out.println("Could not remove the user from the system. ");
     }
 
     public boolean loginAsLibraryMember(String userName, String password){

@@ -40,6 +40,10 @@ public class Book implements Serializable {
         return libraryUser;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
     public void setLibraryUser(String libraryUser) {
         this.libraryUser = libraryUser;
     }
