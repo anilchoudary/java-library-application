@@ -235,11 +235,10 @@ public class Menu implements Serializable {
                             break;
 
                         case "4":
-                            System.out.println("Search author");
-                            //String searchAuthor = searchAuthor();
-                            /*if(!newLibrarySystem.findAuthor(searchAuthor, userName)){
-                                System.out.println("Sorry we could not find this title. ");
-                            }*/
+                            String searchAuthor = searchAuthor();
+                            if(!newLibrarySystem.findAuthor(searchAuthor, userName)){
+                                System.out.println("Sorry we could not find this author. ");
+                            }
                             break;
 
                         case "5":

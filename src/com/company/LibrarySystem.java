@@ -97,7 +97,7 @@ public class LibrarySystem implements Serializable {
                 System.out.println(book.toStringMembers());
                 if(book.isAvailable()){
                     borrowBook(book, userName);
-                    break;
+                    return true;
                 }
                 else if(!book.isAvailable()){
                     System.out.println("Sorry this book is not available. ");
@@ -108,20 +108,22 @@ public class LibrarySystem implements Serializable {
         return false;
     }
 
-    /*public boolean findAuthor(String author, String userName){
+    public boolean findAuthor(String author, String userName){
         for(Book book: addedBooks){
             if(book.getAuthor().equals(author)){
+                System.out.println(book.toStringMembers());
                 if(book.isAvailable()){
                     borrowBook(book, userName);
+                    return true;
                 }
-                else{
-                    System.out.println("Sorry could not find this author. ");
-                    break;
+                else if(!book.isAvailable()){
+                    System.out.println("Sorry this book is not available. ");
+                    return true;
                 }
             }
         }
         return false;
-    }*/
+    }
 
     // For library member: borrow book method
     private void borrowBook(Book book, String userName){
