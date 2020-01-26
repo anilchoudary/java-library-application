@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.org.apache.xerces.internal.impl.xs.SchemaNamespaceSupport;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,6 @@ public class LibrarySystem implements Serializable {
     private List<Book> addedBooks;
     private List<Book> borrowedBooks;
     private List<Book> availableBooks;
-    transient private Scanner input = new Scanner(System.in);
     private static final long serialVersionUID = 4220048072494770351L;
 
     public LibrarySystem() {
@@ -46,18 +43,26 @@ public class LibrarySystem implements Serializable {
     }
 
 
-    public void allLibraryBooks(){
+    // All library books in the system (both available and non available)
+    public void allLibraryBooks(String user){
         for(Book book: addedBooks){
-            System.out.println(book.toString());
+            if(user.equals("admin")){
+                System.out.println(book.toString());
+            }
+            else{
+                System.out.println(book.toStringMembers());
+            }
         }
     }
 
+    // All borrowed books, admin view only
     public void allBorrowedBooks(){
         for(Book book: borrowedBooks){
             System.out.println(book.toString());
         }
     }
 
+    // Users borrowed books
     public void myBorrowedBooks(String userName){
         for(Book book: borrowedBooks){
             if(userName.equals(book.getLibraryUser())){
@@ -71,9 +76,14 @@ public class LibrarySystem implements Serializable {
         }
     }
 
-    public void allAvailableBooksToRent(){
+    public void allAvailableBooksToRent(String user){
         for(Book book: availableBooks){
-            System.out.println(book.toString());
+            if(user.equals("admin")){
+                System.out.println(book.toString());
+            }
+            else{
+                System.out.println(book.toStringMembers());
+            }
         }
     }
 

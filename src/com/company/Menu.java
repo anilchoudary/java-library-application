@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Menu implements Serializable {
 
     private transient Scanner input = new Scanner(System.in);
-    private String[] choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8"};
+    private String[] choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8"}; // Array for switch cases
     private boolean running = true;
 
     static LibrarySystem newLibrarySystem = new LibrarySystem();
@@ -45,6 +45,7 @@ public class Menu implements Serializable {
                 if (Arrays.asList(choices).contains(choice)) {
                     switch (choice) {
 
+                        // Must be chosen to load files with information
                         case "0":
                             loadBookInformationAndStartProgram(outputFile);
                             loadBookInformationAndStartProgram(borrowedBooksFile);
@@ -97,6 +98,7 @@ public class Menu implements Serializable {
         }
     }
 
+    // Pre-set username and password for admin
     private void adminLogin(){
         String admin = "admin";
         System.out.println("Please enter your user name: ");
@@ -115,6 +117,7 @@ public class Menu implements Serializable {
     }
 
     private void adminMenu(){
+        String admin = "admin";
         String choice = "";
         boolean run = true;
 
@@ -153,12 +156,12 @@ public class Menu implements Serializable {
 
                         case "4":
                             System.out.println("All books in the library. ");
-                            newLibrarySystem.allLibraryBooks();
+                            newLibrarySystem.allLibraryBooks(admin);
                             break;
 
                         case "5":
                             System.out.println("Available books: ");
-                            newLibrarySystem.allAvailableBooksToRent();
+                            newLibrarySystem.allAvailableBooksToRent(admin);
                             break;
 
                         case "6":
@@ -201,11 +204,12 @@ public class Menu implements Serializable {
             System.out.println(
                     "Make one of the following choices: " + "\n" +
                             "1. See all books in the library " + "\n" +
-                            "2. Search a book by title " + "\n" +
-                            "3. Search book by author " + "\n" +
-                            "4. My borrowed books " + "\n" +
-                            "5. Return book" + "\n" +
-                            "6. Exit to main menu" + "\n");
+                            "2. See all available books " + "\n" +
+                            "3. Search a book by title " + "\n" +
+                            "4. Search book by author " + "\n" +
+                            "5. My borrowed books " + "\n" +
+                            "6. Return book" + "\n" +
+                            "7. Exit to main menu" + "\n");
 
             try {
                 // User choice
@@ -216,10 +220,15 @@ public class Menu implements Serializable {
                     switch (choice) {
                         case "1":
                             System.out.println("All books in the library: ");
-                            newLibrarySystem.allLibraryBooks();
+                            newLibrarySystem.allLibraryBooks(userName);
                             break;
 
                         case "2":
+                            System.out.println("All available books. ");
+                            newLibrarySystem.allAvailableBooksToRent(userName);
+                            break;
+
+                        case "3":
                             System.out.println("Search book title");
                             String searchTitle = searchBook();
                             if(!newLibrarySystem.findTitle(searchTitle, userName)){
@@ -227,16 +236,16 @@ public class Menu implements Serializable {
                             }
                             break;
 
-                        case "3":
+                        case "4":
                             System.out.println("Search author");
                             break;
 
-                        case "4":
+                        case "5":
                             System.out.println("My borrowed books: ");
                             newLibrarySystem.myBorrowedBooks(userName);
                             break;
 
-                        case "5":
+                        case "6":
                             System.out.println("Return book. ");
                             String returnBook = searchBook();
                             if(!newLibrarySystem.returnBook(returnBook)){
@@ -244,7 +253,7 @@ public class Menu implements Serializable {
                             }
                             break;
 
-                        case "6":
+                        case "7":
                             System.out.println("Back to main menu. ");
                             run = false;
                             break;
@@ -308,8 +317,8 @@ public class Menu implements Serializable {
         return new String[] {userName, password};
     }
 
+    // Save files, users
     private void saveUserInformationAndExit(){
-
         FileOutputStream fos = null;
         ObjectOutputStream oos;
 
@@ -321,13 +330,16 @@ public class Menu implements Serializable {
         try {
             oos = new ObjectOutputStream(fos);
             oos.writeObject(userInformation);
-            fos.close();
+            if (fos != null) {
+                fos.close();
+            }
             oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // Load files, users
     private void loadUserInformationAndStartProgram()  {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
@@ -345,14 +357,16 @@ public class Menu implements Serializable {
             e.printStackTrace();
         }
         try {
-            userInformation = (ManageUserInformation) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            if (ois != null) {
+                userInformation = (ManageUserInformation) ois.readObject();
+            }
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         try {
-            fis.close();
+            if (fis != null) {
+                fis.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -364,9 +378,8 @@ public class Menu implements Serializable {
 
     }
 
-
+    // Save files, books
     private void saveBookInformationAndExit(String fileName, LibrarySystem library){
-
         FileOutputStream fos = null;
         ObjectOutputStream oos;
 
@@ -378,13 +391,16 @@ public class Menu implements Serializable {
         try {
             oos = new ObjectOutputStream(fos);
             oos.writeObject(library);
-            fos.close();
+            if (fos != null) {
+                fos.close();
+            }
             oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // Load files, books
     private void loadBookInformationAndStartProgram(String filename)  {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
@@ -402,14 +418,16 @@ public class Menu implements Serializable {
             e.printStackTrace();
         }
         try {
-            newLibrarySystem = (LibrarySystem) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            if (ois != null) {
+                newLibrarySystem = (LibrarySystem) ois.readObject();
+            }
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         try {
-            fis.close();
+            if (fis != null) {
+                fis.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

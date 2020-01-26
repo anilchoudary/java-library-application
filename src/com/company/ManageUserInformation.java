@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 public class ManageUserInformation implements Serializable {
 
-    private transient Scanner input = new Scanner(System.in);
     private List<User> users;
     private static final long serialVersionUID = -4263653752514191475L;
 

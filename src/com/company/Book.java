@@ -28,18 +28,6 @@ public class Book implements Serializable {
         return bookTitle;
     }
 
-    public void setBookTitle(String bookTitle) {
-        this.bookTitle = bookTitle;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public boolean isAvailable() {
         return available;
     }
@@ -56,7 +44,7 @@ public class Book implements Serializable {
         this.libraryUser = libraryUser;
     }
 
-    @Override
+    // For admin only, should be able to see library users
     public String toString() {
         return "[Book] " + "\n" +
                 "TITLE: '" + bookTitle + '\''  + "\n" +
@@ -65,4 +53,15 @@ public class Book implements Serializable {
                 "AVAILABLE: '" + available + '\''  + "\n" +
                 "RENTED BY: '" + libraryUser + '\''  + "\n";
     }
+
+    // Library members should not the library users who has rented the book
+    public String toStringMembers() {
+        return "[Book] " + "\n" +
+                "TITLE: '" + bookTitle + '\''  + "\n" +
+                "AUTHOR: '" + author + '\''  + "\n" +
+                "ABOUT: '" + aboutThisBook + '\''  + "\n" +
+                "AVAILABLE: '" + available + '\''  + "\n";
+    }
+
+
 }
