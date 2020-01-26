@@ -8,14 +8,14 @@ public class Menu implements Serializable {
 
     private transient Scanner input = new Scanner(System.in);
     private String[] choices = {"0", "1", "2", "3", "4", "5", "6", "7", "8"}; // Array for switch cases
-    private boolean running = true;
+    private boolean running = true; // Boolean for main menu
 
-    static LibrarySystem newLibrarySystem = new LibrarySystem();
-    static ManageUserInformation userInformation = new ManageUserInformation();
+    private static LibrarySystem newLibrarySystem = new LibrarySystem();
+    private static ManageUserInformation userInformation = new ManageUserInformation();
 
-    static String memberList = "member.ser"; // All members in the system
-    static String outputFile = "output.ser"; // All books in the system
-    static String borrowedBooksFile = "borrow.ser"; // Borrowed books
+    private static String memberList = "member.ser"; // All members in the system
+    private static String outputFile = "output.ser"; // All books in the system
+    private static String borrowedBooksFile = "borrow.ser"; // Borrowed books
 
 
     public Menu() {
@@ -29,7 +29,7 @@ public class Menu implements Serializable {
 
         while (running) {
             System.out.println(
-                    "MAIN MENU" + "\n" +
+                    "LIBRARY MAIN MENU" + "\n" +
                             "[0] Load and start program" + "\n" +
                             "[1] Log in as admin" + "\n" +
                             "[2] Log in as library member" + "\n" +
@@ -37,7 +37,6 @@ public class Menu implements Serializable {
                             "[4] Exit and save program");
 
             try {
-
                 // User choice
                 choice = input.nextLine();
 
@@ -295,14 +294,13 @@ public class Menu implements Serializable {
         userInformation.addUserToArray(newMember);
     }
 
-    public void addNewBook(){
+    private void addNewBook(){
         System.out.println("Please add the book title: ");
         String bookTitle = input.nextLine();
         System.out.println("Please add the author: ");
         String author = input.nextLine();
         System.out.println("Please add information about the book: ");
         String aboutThisBook = input.nextLine();
-        boolean available = true;
         String user = "None";
         Book newBook = new Book(bookTitle, author, aboutThisBook, true, user);
         newLibrarySystem.addBookToArray(newBook);

@@ -3,12 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="ef7d0cd6-f21c-4c21-afba-8562d8e1916c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/Book.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/Book.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/borrow.ser" beforeDir="false" afterPath="$PROJECT_DIR$/borrow.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/LibrarySystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/ManageUserInformation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/ManageUserInformation.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/library-java/com/company/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/library-java/com/company/Menu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Book.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Book.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/output.ser" beforeDir="false" afterPath="$PROJECT_DIR$/output.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/LibrarySystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/LibrarySystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/ManageUserInformation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/ManageUserInformation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Menu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/User.java" afterDir="false" />

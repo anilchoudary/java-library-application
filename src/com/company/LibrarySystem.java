@@ -7,9 +7,11 @@ import java.util.Scanner;
 
 public class LibrarySystem implements Serializable {
 
-    private List<Book> addedBooks;
-    private List<Book> borrowedBooks;
-    private List<Book> availableBooks;
+    private List<Book> addedBooks; // All books in the library
+    private List<Book> borrowedBooks; // All borrowed books
+    private List<Book> availableBooks; // All available books to rent
+
+    // Added to resolve invalid class exception
     private static final long serialVersionUID = 4220048072494770351L;
 
     public LibrarySystem() {
@@ -18,12 +20,14 @@ public class LibrarySystem implements Serializable {
         availableBooks = new ArrayList<>();
     }
 
+    // Adding both to all books (addedBooks) and availaleBooks list
     public void addBookToArray(Book book){
         addedBooks.add(book);
         availableBooks.add(book);
         System.out.println("Successfully added " + book.getBookTitle() + " to the system. ");
     }
 
+    // Removing books both from all books in the library as well as the available books list
     public void removeBookFromArray(String removeBook){
         for(Book book: addedBooks){
             if(removeBook.equals(book.getBookTitle())){
@@ -71,11 +75,12 @@ public class LibrarySystem implements Serializable {
                 }
             }
             else{
-                System.out.println("You have no borrowed books. ");
+                System.out.println("You have no borrowed books. " + "\n");
             }
         }
     }
 
+    // See all available books to rent
     public void allAvailableBooksToRent(String user){
         for(Book book: availableBooks){
             if(user.equals("admin")){
@@ -87,6 +92,7 @@ public class LibrarySystem implements Serializable {
         }
     }
 
+    // Search book by title
     public boolean findTitle(String title, String userName){
         for(Book book: addedBooks){
             if(book.getBookTitle().equals(title)){
@@ -102,6 +108,7 @@ public class LibrarySystem implements Serializable {
         return false;
     }
 
+    // For library member: borrow book method
     private void borrowBook(Book book, String userName){
         Scanner in = new Scanner(System.in);
         System.out.println("Would you like to borrow the book " + book.getBookTitle() +"?" + "\n"
@@ -132,6 +139,7 @@ public class LibrarySystem implements Serializable {
         }
     }
 
+    // Return book and add and remove from the different lists
     public boolean returnBook(String returnTitle){
         Scanner in = new Scanner(System.in);
         System.out.println("Would you like to return the book " + returnTitle +"?" + "\n"

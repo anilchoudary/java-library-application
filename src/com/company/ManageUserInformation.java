@@ -2,11 +2,10 @@ package com.company;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ManageUserInformation implements Serializable {
 
-    private List<User> users;
+    private List<User> users; // All library members
     private static final long serialVersionUID = -4263653752514191475L;
 
 

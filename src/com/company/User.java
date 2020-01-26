@@ -6,7 +6,7 @@ public class User implements Serializable {
     private String userName;
     private String password;
 
-    // // Added to resolve invalid class exception
+    // Added to resolve invalid class exception
     private static final long serialVersionUID = 5841402549658530467L;
 
     public User(String userName, String password) {
